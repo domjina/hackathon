@@ -8,7 +8,20 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 def main():
     sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
-    print("Done")
+    try:
+        haveJoined()
+    except socket.error as e:
+        print("Could not join:",e)
+
+
+    print("done")
+
+def haveJoined():
+    joined = False
+    while joined == False:
+        data, addr = sock.recvfrom(1024)
+        if b"playerjoined:warrior,JH02" in data:
+            joined = True
 
 if __name__ == "__main__":
     main()
