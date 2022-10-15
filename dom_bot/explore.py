@@ -1,5 +1,4 @@
 import doms_scipts as ds
-import socket
 mappedWalls = [[]]
 mappedFloor = [[]]
 
@@ -23,4 +22,4 @@ print(ds.getPlayerPosition(s))
             #if coords not in mappedFloor
                 #mappedFloors.append(list(coords))
                 #visited_but_unprocessed.append(coords)
-#        pass
+        #pass
