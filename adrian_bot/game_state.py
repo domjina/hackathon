@@ -5,6 +5,11 @@ class GameInstance:
     def __init__(self) -> None:
         self.game_floorplan = {}
         self.player_pos = (0, 0)
+        self.nav_target = None
+        self.has_key = False
+        self.health = 100
+        self.ammo = 10
+        self.exit = None
 
     def explore_floor(self, x, y):
         self.game_floorplan[(int(x), int(y))] = TileType.FLOOR
@@ -16,5 +21,6 @@ class GameInstance:
         self.player_pos = (x, y)
 
     def get_tile_at(self, x, y):
-        return self.game_floorplan.get((int(x), int(y)), default=TileType.UNEXPLORED)
+        # print(x, y, self.game_floorplan.get((int(x), int(y)), TileType.UNEXPLORED))
+        return self.game_floorplan.get((int(x), int(y)), TileType.UNEXPLORED)
     

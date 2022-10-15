@@ -80,7 +80,9 @@ def parse_server_message(msg, debug=False):
         args_parsed = [(float(args[0]), float(args[1])), float(args[2]), float(args[3]), args[4] == "True"]
     elif msg_type in ["nearbywalls", "nearbyfloors"]:
         msg_type = MsgType.NEAR_FLOORS if msg_type == "nearbyfloors" else MsgType.NEAR_WALLS
-        args_parsed = [(float(args[0]), float(args[1])), (float(args[2]), float(args[3]))]
+        for i in range(0, len(args), 2):
+            args_parsed.append((float(args[i]), float(args[i+1])))
+        # args_parsed = [(float(args[0]), float(args[1])), (float(args[2]), float(args[3]))]
     elif msg_type == "nearbyitem":
         msg_type = MsgType.NEAR_ITEM
         for i in range(0, len(args), 3):
@@ -101,6 +103,7 @@ def parse_server_message(msg, debug=False):
     elif msg_type == "exit":
         msg_type = MsgType.EXIT
         args_parsed = [(float(args[0]), float(args[1]))]
+        print("EXIT message found!", args_parsed)
     else:
         print(f"!!!   MESSAGE TYPE '{ msg_type }' IS UNDEFINED   !!!")
     # if debug: print((msg_type, args_parsed))
