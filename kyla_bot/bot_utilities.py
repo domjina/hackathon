@@ -1,5 +1,6 @@
 from enum import Enum, auto
 import math
+from re import L
 
 
 class MsgType(Enum):
@@ -134,28 +135,49 @@ def getEnemyDistance(enemyX, enemyY, posx, posy):
     return (enemyX - posx)**2 + (enemyY-posy)**2
 
 def getEnemyDirection(enemyX, enemyY, posx, posy):
-    d = getEnemyDistance(enemyX, enemyY, posx, posy)
-    alpha = math.asin((enemyX-posx)/d) * 180/math.pi
-    if alpha < 0:
-        alpha = alpha + 360
+    # d = getEnemyDistance(enemyX, enemyY, posx, posy)
+    # alpha = math.asin((enemyX-posx)/d) * 180/math.pi
+    # if alpha < 0:
+    #     alpha = alpha + 360
     
-    if alpha < 22.5:
-        direction = "n"
-    elif alpha < 67.5:
-        direction = "ne"
-    elif alpha < 112.5:
-        direction = "e"
-    elif alpha < 157.5:
-        direction = "se"
-    elif alpha < 202.5:
-        direction = "s"
-    elif alpha < 247.5:
-        direction = "sw"
-    elif alpha < 292.5:
-        direction = "w"
-    elif alpha < 337.5:
-        direction = "nw"
+    # if alpha < 22.5:
+    #     direction = "n"
+    # elif alpha < 67.5:
+    #     direction = "ne"
+    # elif alpha < 112.5:
+    #     direction = "e"
+    # elif alpha < 157.5:
+    #     direction = "se"
+    # elif alpha < 202.5:
+    #     direction = "s"
+    # elif alpha < 247.5:
+    #     direction = "sw"
+    # elif alpha < 292.5:
+    #     direction = "w"
+    # else:
+    #     direction = "nw"
 
+    # print(alpha)
+
+    if enemyX == posx:
+        if (enemyY > posy):
+            direction = "n"
+        else:
+            direction = "s"
+    elif enemyY == posy:
+        if (enemyX > posx):
+            direction = "e"
+        else:
+            direction = "w"
+    elif (enemyX > posx) and (enemyY > posy):
+        direction = "ne"
+    elif (enemyX > posx) and (enemyY < posy):
+        direction = "se"
+    elif (enemyX < posx) and (enemyY < posy):
+        direction = "sw"
+    else:
+        direction = "nw"
+        
     return direction
 
 def faceDirection(direction, connection, connected_on):
