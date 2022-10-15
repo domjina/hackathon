@@ -1,8 +1,6 @@
 import socket
 import random
 
-
-
 places_seen = [] #empty list
 UDP_IP = "127.0.0.1"
 UDP_PORT = 11000

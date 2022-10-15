@@ -1,4 +1,4 @@
-import doms_scipts as ds
+import doms_bot_utilities as ds
 import bot_utilities as bu
 
 mappedWalls = [[]]
