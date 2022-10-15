@@ -67,6 +67,15 @@ while True:
         posSplit = pos.split(",")
         posx = float(posSplit[0])
         posy = float(posSplit[1])
+
+    if msgFromServerParsed[0] == bot.MsgType.NEAR_PLAYER:
+        enemyName, enemyX, enemyY = msgFromServerParsed[1].split(",")
+        enemyDistance = bot.getEnemyDistance(enemyX, enemyY, posx, posy)
+        if enemyDistance < 16**2:
+            enemyDirection = bot.getEnemyDirection(enemyX, enemyY, posx, posy)
+            bot.faceDirection(enemyDirection, UDPClientSocket, serverAddressPort)
+            bot.fire(UDPClientSocket, serverAddressPort)
+        # this would be a good place to make a hunter bot
     
     if msgFromServerParsed[0] == bot.MsgType.NEAR_ITEM:
         for element in msgFromServerParsed[1]:
@@ -81,14 +90,7 @@ while True:
                 posx += element[1][0] - posx
                 posy += element[1][1] - posy
     
-    if msgFromServerParsed[0] == bot.MsgType.NEAR_PLAYER:
-        enemyName, enemyX, enemyY = msgFromServerParsed[1].split(",")
-        enemyDistance = bot.getEnemyDistance(enemyX, enemyY, posx, posy)
-        if enemyDistance < 16:
-            enemyDirection = bot.getEnemyDirection(enemyX, enemyY, posx, posy)
-            bot.faceDirection(enemyDirection, UDPClientSocket, serverAddressPort)
-            bot.fire(UDPClientSocket, serverAddressPort)
-        # this would be a good place to make a hunter bot
+    
 
 
 

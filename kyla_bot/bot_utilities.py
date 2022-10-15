@@ -131,7 +131,7 @@ def fire(connection, connected_on):
     print("Fire!")
 
 def getEnemyDistance(enemyX, enemyY, posx, posy):
-    return math.sqrt((enemyX - posx)**2 + (enemyY-posy)**2)
+    return (enemyX - posx)**2 + (enemyY-posy)**2
 
 def getEnemyDirection(enemyX, enemyY, posx, posy):
     d = getEnemyDistance(enemyX, enemyY, posx, posy)
