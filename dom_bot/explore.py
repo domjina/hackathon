@@ -35,11 +35,13 @@ while True:
     if msgFromServerParsed[0] == bu.MsgType.NEAR_ITEM:
         for element in msgFromServerParsed[1]:
             if element[0] == bu.ItemType.KEY :
-                if bu.playerclass_to_playercolor[player_class] == element[2][0]:
+                if bu.playerclass_to_playercolor[player_class] == element[2]:
                     dbu.move((curX, curY), element[1][0]-curX, element[1][1]-curY, sock, connection)
                     curX += element[1][0] - curX
                     curY += element[1][1] - curY
+                    break
 
     elif msgFromServerParsed[0] == bu.MsgType.NEAR_PLAYER:
-        print(msgFromServerParsed[2])
+        if math.sqrt((curX - msgFromServerParsed[1][2][0]) + (curY - msgFromServerParsed[1][2][1])):
+            print("FIREEEEEEEEEEEEEEE")
         #if math.sqrt(ms)s
