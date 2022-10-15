@@ -1,4 +1,5 @@
 import doms_scipts as ds
+import bot_utilities as bu
 mappedWalls = [[]]
 mappedFloor = [[]]
 
