@@ -46,7 +46,49 @@ def main():
     UDPClientSocket.sendto(bytesToSend, serverAddressPort)
     while True:
 
+<<<<<<< HEAD
+
+
+while True:
+
+    msgFromServer = UDPClientSocket.recvfrom(bufferSize)[0].decode('ascii')
+    
+    ##uncomment to see message format from server
+    print(msgFromServer)
+    parse_server_message(msgFromServer, True)
+
+    if "playerupdate" in msgFromServer:
+        pos = msgFromServer.split(":")[1]
+        posSplit = pos.split(",")
+        posx = float(posSplit[0])
+        posy = float(posSplit[1])
+
+
+    now = time.time()
+
+    #every few seconds, request to move to a random point nearby. No pathfinding, server will 
+    #attempt to move in straight line.
+    if (now - timeSinceMove) > moveInterval:
+        randomX = random.randrange(-50,50)
+        randomY = random.randrange(-50,50)
+        posx += randomX
+        posy += randomY
+
+        timeSinceMove = time.time()
+        requestmovemessage = "moveto:" + str(posx)  + "," + str(posy)
+        SendMessage(requestmovemessage)
+        print(requestmovemessage)
+
+    #let's fire
+    if (now - timeSinceFire) > fireInterval:
+        timeSinceFire = time.time()
+        fireMessage = "fire:"
+        SendMessage(fireMessage)
+        print(fireMessage)
+       
+=======
         msgFromServer = UDPClientSocket.recvfrom(bufferSize)[0].decode('ascii')
+>>>>>>> b0524151cae56c8811a1bc93050835998e1b45bf
         
         ##uncomment to see message format from server
         # print(msgFromServer)
@@ -92,6 +134,13 @@ def main():
 
         if(now - timeSinceDirectionMove) > directionMoveInterval:
 
+<<<<<<< HEAD
+        randomDirection = random.choice(directions)
+        directionFaceMessage = "facedirection:" + randomDirection
+        SendMessage(directionFaceMessage)
+        timeSinceDirectionFace = time.time()
+        print(directionFaceMessage)
+=======
             randomDirection = random.choice(directions)
             directionMoveMessage = "movedirection:" + randomDirection
             SendMessage(directionMoveMessage)
@@ -110,3 +159,4 @@ def main():
 if __name__ == "__main__":
     main()
 
+>>>>>>> b0524151cae56c8811a1bc93050835998e1b45bf

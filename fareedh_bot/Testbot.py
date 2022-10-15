@@ -53,7 +53,7 @@ while True:
     msgFromServer = UDPClientSocket.recvfrom(bufferSize)[0].decode('ascii')
     
     ##uncomment to see message format from server
-    #print(msgFromServer)
+    print(msgFromServer)
     
     if "playerupdate" in msgFromServer:
         pos = msgFromServer.split(":")[1]
