@@ -1,6 +1,4 @@
-from ctypes.wintypes import MSG
 from enum import Enum, auto
-from re import A
 
 
 class MsgType(Enum):
@@ -28,10 +26,25 @@ class PlayerColor(Enum):
     YELLOW = auto()
     BLUE = auto()
 
-#player_class_to_color()
+playerclass_to_playercolor = {
+    "warrior": PlayerColor.RED,
+    "elf": PlayerColor.GREEN,
+    "wizard": PlayerColor.YELLOW,
+    "valkyrie": PlayerColor.BLUE,
+}
 
-map_item_name = {
-    "key": ItemType.KEY,
+color_to_playercolor = {
+    "red": PlayerColor.RED,
+    "green": PlayerColor.GREEN,
+    "yellow": PlayerColor.YELLOW,
+    "blue": PlayerColor.BLUE,
+}
+
+itemname_to_itemtype = {
+    "redkey": ItemType.KEY,
+    "greenkey": ItemType.KEY,
+    "yellowkey": ItemType.KEY,
+    "bluekey": ItemType.KEY,
     "ammo": ItemType.AMMO,
     "food": ItemType.FOOD,
     "treasure": ItemType.TREASURE,
@@ -39,6 +52,15 @@ map_item_name = {
     "exit": ItemType.EXIT,
 }
 
+
+# Format of output:
+    # playerjoined: PlayerColor(Enum),  display_name,   (posX,posY)
+    # playerupdate: (posX,posY),    health,     ammo,   hasKey
+    # nearbywalls:  (posX,posY), (posX,posY), (posX,posY), .... (posX,posY pairs will repeat for every nearby wall segment)
+    # nearbyfloors: (posX,posY), (posX,posY), (posX,posY), .... (posX,posY pairs will repeat for every nearby floor segment)
+    # nearbyitem:   ( ItemType(Enum), (posX,posY), ?PlayerColor(Enum) ),    ....
+    # nearbyplayer: PlayerColor(Enum),  (posX,posY)
+    # exit:         (posX,posY)
 def parse_server_message(msg, debug=False):
     args = msg.strip(',').split(",")
     msg_type, args[0] = args[0].split(":")
@@ -46,7 +68,10 @@ def parse_server_message(msg, debug=False):
 
     if msg_type == "playerjoined":
         msg_type = MsgType.P_JOINED
-        args_parsed = [args[0], args[1], (float(args[2]), float(args[3]))]
+        if args[0] not in playerclass_to_playercolor:
+            print(f"!!!   PLAYER CLASS '{ args[0] }' IS UNDEFINED   !!!")
+        else:
+            args_parsed = [playerclass_to_playercolor[args[0]], args[1], (float(args[2]), float(args[3]))]
     elif msg_type == "playerupdate":
         msg_type = MsgType.P_UPDATE
         args_parsed = [(float(args[0]), float(args[1])), float(args[2]), float(args[3]), args[4] == "True"]
@@ -56,13 +81,20 @@ def parse_server_message(msg, debug=False):
     elif msg_type == "nearbyitem":
         msg_type = MsgType.NEAR_ITEM
         for i in range(0, len(args), 3):
-            if args[i] not in map_item_name:
-                print(f"ITEM TYPE '{ args[i] }' IS UNDEFINED")
+            if args[i] not in itemname_to_itemtype:
+                print(f"!!!   ITEM TYPE '{ args[i] }' IS UNDEFINED   !!!")
                 continue
-            args_parsed.append((map_item_name[args[i]], (float(args[i+1]), float(args[i+2]))))
+            itype = itemname_to_itemtype[args[i]]
+            icolor = None
+            if itype == ItemType.KEY:
+                icolor = color_to_playercolor[args[i][:-3]]
+            args_parsed.append((itype, (float(args[i+1]), float(args[i+2])), icolor))
     elif msg_type == "nearbyplayer":
         msg_type = MsgType.NEAR_PLAYER
-        args_parsed = [args[0], (float(args[1]), float(args[2]))]
+        if args[0] not in playerclass_to_playercolor:
+            print(f"!!!   PLAYER CLASS '{ args[0] }' IS UNDEFINED   !!!")
+        else:
+            args_parsed = [playerclass_to_playercolor[args[0]], (float(args[1]), float(args[2]))]
     elif msg_type == "exit":
         msg_type = MsgType.EXIT
         args_parsed = [(float(args[0]), float(args[1]))]

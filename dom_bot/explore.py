@@ -1,5 +1,6 @@
 import doms_scipts as ds
 import bot_utilities as bu
+
 mappedWalls = [[]]
 mappedFloor = [[]]
 
@@ -7,8 +8,13 @@ stuffOfInterest = {"exit" : "", "food":"", "ammo":""}
 
 nearby_floors = []
 
-s = ds.connect(("127.0.0.1", 11000))
-print(ds.getPlayerPosition(s))
+sock, connection, curX, curY = ds.connect(("127.0.0.1", 11000))
+#while True:
+#    msgFromServer_encoded = sock.recvfrom(1024)[0].decode('ascii')
+#    msgFromServer_parsed = bu.parse_server_message(msgFromServer_encoded)
+#    if msgFromServer_parsed[0] == bu.MsgType.P_UPDATE:
+#        ds.move(msgFromServer_parsed[1][0], 32, 32, sock, connection)
+#        print("Moved")
 
 #while True:
 #    visited_but_unprocessed = []
@@ -24,3 +30,20 @@ print(ds.getPlayerPosition(s))
                 #mappedFloors.append(list(coords))
                 #visited_but_unprocessed.append(coords)
         #pass
+
+
+
+while True:
+   msgFromServer_encoded = sock.recvfrom(1024)[0].decode("ascii")
+   msgFromServerParsed = bu.parse_server_message(msgFromServer_encoded)
+   if msgFromServerParsed[0] == bu.MsgType.NEAR_ITEM:
+    for element in msgFromServerParsed[1]:
+        if element[0] == bu.ItemType.KEY:
+            ds.move((curX, curY), element[1][0]-curX, element[1][1]-curY, sock, connection)
+
+
+#have 2 sets, one of floors and one of walls
+#iterate through floors
+#When the next tiles is a wall, stop
+#go back and try another floor
+            
