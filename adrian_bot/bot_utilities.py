@@ -10,9 +10,12 @@ class MsgType(Enum):
     NEAR_FLOORS = auto()
     EXIT = auto()
 
+class TileType(Enum):
+    WALL = auto()
+    FLOOR = auto()
+    UNEXPLORED = auto()
+
 class ItemType(Enum):
-    # WALL = auto()
-    # FLOOR = auto()
     KEY = auto()
     AMMO = auto()
     FOOD = auto()
@@ -59,7 +62,7 @@ itemname_to_itemtype = {
     # nearbywalls:  (posX,posY), (posX,posY), (posX,posY), .... (posX,posY pairs will repeat for every nearby wall segment)
     # nearbyfloors: (posX,posY), (posX,posY), (posX,posY), .... (posX,posY pairs will repeat for every nearby floor segment)
     # nearbyitem:   ( ItemType(Enum), (posX,posY), ?PlayerColor(Enum) ),    ....
-    # nearbyplayer: PlayerColor(Enum),  (posX,posY)
+    # nearbyplayer: PlayerColor(Enum), name, (posX,posY)
     # exit:         (posX,posY)
 def parse_server_message(msg, debug=False):
     args = msg.strip(',').split(",")
@@ -94,7 +97,7 @@ def parse_server_message(msg, debug=False):
         if args[0] not in playerclass_to_playercolor:
             print(f"!!!   PLAYER CLASS '{ args[0] }' IS UNDEFINED   !!!")
         else:
-            args_parsed = [playerclass_to_playercolor[args[0]], (float(args[1]), float(args[2]))]
+            args_parsed = [playerclass_to_playercolor[args[0]], args[1], (float(args[2]), float(args[3]))]
     elif msg_type == "exit":
         msg_type = MsgType.EXIT
         args_parsed = [(float(args[0]), float(args[1]))]
