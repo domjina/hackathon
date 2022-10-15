@@ -60,12 +60,6 @@ while True:
         for pos in msgFromServerParsed[1]:
             game.explore_floor(*pos)
 
-        # print("floors: ", msgFromServerParsed[1])
-        bfspath_data = get_target_exploring(game, game.nav_target)
-        next_move = get_move_position_from_trace(*bfspath_data)
-        # print("from: ", game.player_pos)
-        # print("next move: ", next_move)
-        dbu.move(game.player_pos, *next_move, sock, connection)
     elif msgFromServerParsed[0] == bu.MsgType.P_UPDATE:
         game.player_pos = msgFromServerParsed[1][0]
         game.explore_floor(*game.player_pos)
@@ -76,6 +70,12 @@ while True:
         if game.has_key:
             game.nav_target = game.exit
         
+        # print("floors: ", msgFromServerParsed[1])
+        bfspath_data = get_target_exploring(game, game.nav_target)
+        next_move = get_move_position_from_trace(*bfspath_data)
+        # print("from: ", game.player_pos)
+        # print("next move: ", next_move)
+        dbu.move(game.player_pos, *next_move, sock, connection)
     elif msgFromServerParsed[0] == bu.MsgType.EXIT:
         game.exit = msgFromServerParsed[1][0]
         print("EXIT = ", game.exit)

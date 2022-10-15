@@ -31,14 +31,14 @@ def move(curPos: tuple, posX: str, posY: str, connection: object, connected_on: 
     message = "moveto:{newX},{newY}".format(newX = posX, newY = posY)
     # print(message)
     connection.sendto(str.encode(str(message)), connected_on)
-    has_moved = False
-    while has_moved == False:
-        msgFromServer_decoded = connection.recvfrom(1024)[0].decode("ascii")
-        msgFromServerParsed = bu.parse_server_message(msgFromServer_decoded)
-        if msgFromServerParsed[0] == bu.MsgType.P_UPDATE:
-            if curPos[0] not in msgFromServerParsed[1]:
-                has_moved = True
-    print("Player has moved")
+    # has_moved = False
+    # while has_moved == False:
+    #     msgFromServer_decoded = connection.recvfrom(1024)[0].decode("ascii")
+    #     msgFromServerParsed = bu.parse_server_message(msgFromServer_decoded)
+    #     if msgFromServerParsed[0] == bu.MsgType.P_UPDATE:
+    #         if curPos[0] not in msgFromServerParsed[1]:
+    #             has_moved = True
+    # print("Player has moved")
 
 
 """
