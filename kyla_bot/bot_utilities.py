@@ -116,14 +116,10 @@ def move(curPos: tuple, posX: str, posY: str, connection: object, connected_on: 
     message = f"moveto:{newX},{newY}"
     print(message)
     connection.sendto(str.encode(message), connected_on)
-    has_moved = False
-    while has_moved == False:
-        msgFromServer_decoded = connection.recvfrom(1024)[0].decode("ascii")
-        msgFromServerParsed = parse_server_message(msgFromServer_decoded)
-        if msgFromServerParsed[0] == MsgType.P_UPDATE:
-            if curPos[0] not in msgFromServerParsed[1]:
-                has_moved = True
-    print("Player has moved")
+
+def moveDirection(direction, connection, connected_on):
+    message = f"movedirection:{direction}"
+    connection.sendto(str.encode(message), connected_on)
 
 def fire(connection, connected_on):
     message = "fire:"
