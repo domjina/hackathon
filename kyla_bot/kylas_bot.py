@@ -13,6 +13,8 @@ serverAddressPort   = ("127.0.0.1", 11000)
 
 bufferSize          = 1024
 
+#hehehehe merge error lol
+
 #bunch of timers and intervals for executing some sample commands
 moveInterval = 0.1
 timeSinceMove = time.time()

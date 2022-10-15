@@ -42,6 +42,6 @@ while True:
                     break
 
     elif msgFromServerParsed[0] == bu.MsgType.NEAR_PLAYER:
-        if math.sqrt((curX - msgFromServerParsed[1][2][0]) + (curY - msgFromServerParsed[1][2][1])):
+        if math.sqrt((curX - msgFromServerParsed[1][2][0])**2 + (curY - msgFromServerParsed[1][2][1])**2):
             print("FIREEEEEEEEEEEEEEE")
         #if math.sqrt(ms)s
