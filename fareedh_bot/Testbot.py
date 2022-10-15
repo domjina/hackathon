@@ -67,8 +67,8 @@ while True:
     #every few seconds, request to move to a random point nearby. No pathfinding, server will 
     #attempt to move in straight line.
     if (now - timeSinceMove) > moveInterval:
-        randomX = random.randrange(-50,50)
-        randomY = random.randrange(-50,50)
+        randomX = random.randint(-50,50)
+        randomY = random.randint(-50,50)
         posx += randomX
         posy += randomY
 
