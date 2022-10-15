@@ -53,7 +53,7 @@ while True:
     msgFromServer = UDPClientSocket.recvfrom(bufferSize)[0].decode('ascii')
     
     ##uncomment to see message format from server
-    # print(msgFromServer)
+    print(msgFromServer)
     parse_server_message(msgFromServer, True)
 
     if "playerupdate" in msgFromServer:
@@ -109,8 +109,3 @@ while True:
         SendMessage(directionFaceMessage)
         timeSinceDirectionFace = time.time()
         print(directionFaceMessage)
-
-
-
-
-

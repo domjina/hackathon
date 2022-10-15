@@ -1,5 +1,6 @@
 import doms_bot_utilities as dbu
 import bot_utilities as bu
+import math
 
 mappedWalls = [[]]
 mappedFloor = [[]]
@@ -7,6 +8,8 @@ mappedFloor = [[]]
 stuffOfInterest = {"exit" : "", "food":"", "ammo":""}
 
 nearby_floors = []
+
+player_class = "warrior"
 
 sock, connection, curX, curY = dbu.connect(("127.0.0.1", 11000))
 
@@ -26,20 +29,17 @@ sock, connection, curX, curY = dbu.connect(("127.0.0.1", 11000))
         #pass
 
 
-
 while True:
-   msgFromServer_decoded = sock.recvfrom(1024)[0].decode("ascii")
-   msgFromServerParsed = bu.parse_server_message(msgFromServer_decoded)
-   if msgFromServerParsed[0] == bu.MsgType.NEAR_ITEM:
-    for element in msgFromServerParsed[1]:
-        if element[0] == bu.ItemType.KEY:
-            dbu.move((curX, curY), element[1][0]-curX, element[1][1]-curY, sock, connection)
-            curX += element[1][0] - curX
-            curY += element[1][1] - curY
+    msgFromServer_decoded = sock.recvfrom(1024)[0].decode("ascii")
+    msgFromServerParsed = bu.parse_server_message(msgFromServer_decoded)
+    if msgFromServerParsed[0] == bu.MsgType.NEAR_ITEM:
+        for element in msgFromServerParsed[1]:
+            if element[0] == bu.ItemType.KEY :
+                if bu.playerclass_to_playercolor[player_class] == element[2][0]:
+                    dbu.move((curX, curY), element[1][0]-curX, element[1][1]-curY, sock, connection)
+                    curX += element[1][0] - curX
+                    curY += element[1][1] - curY
 
-
-#have 2 sets, one of floors and one of walls
-#iterate through floors
-#When the next tiles is a wall, stop
-#go back and try another floor
-            
+    elif msgFromServerParsed[0] == bu.MsgType.NEAR_PLAYER:
+        print(msgFromServerParsed[2])
+        #if math.sqrt(ms)s
