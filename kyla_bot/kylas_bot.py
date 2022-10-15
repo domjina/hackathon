@@ -74,6 +74,7 @@ while True:
         enemyName, enemyX, enemyY = msgFromServerParsed[1].split(",")
         enemyDistance = bot.getEnemyDistance(enemyX, enemyY, posx, posy)
         if enemyDistance < 16**2:
+            print("Enemy within shooting range")
             enemyDirection = bot.getEnemyDirection(enemyX, enemyY, posx, posy)
             bot.faceDirection(enemyDirection, UDPClientSocket, serverAddressPort)
             bot.fire(UDPClientSocket, serverAddressPort)
