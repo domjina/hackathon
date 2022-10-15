@@ -3,6 +3,7 @@ import socket
 import time
 import random
  
+#Merge conflict just for kyla
 
 msgFromClient       = "requestjoin:mydisplayname"
 name = "mydisplayname"
