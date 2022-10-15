@@ -71,7 +71,7 @@ while True:
         posy = float(posSplit[1])
 
     if msgFromServerParsed[0] == bot.MsgType.NEAR_PLAYER:
-        enemyName, enemyX, enemyY = msgFromServerParsed[1].split(",")
+        enemyClass, enemyName, enemyX, enemyY = msgFromServerParsed[1]
         enemyDistance = bot.getEnemyDistance(enemyX, enemyY, posx, posy)
         if enemyDistance < 16**2:
             print("Enemy within shooting range")
