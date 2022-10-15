@@ -132,49 +132,30 @@ def fire(connection, connected_on):
     print("Fire!")
 
 def getEnemyDistance(enemyX, enemyY, posx, posy):
-    return (enemyX - posx)**2 + (enemyY-posy)**2
+    return (enemyX - posx)**2 + (enemyY - posy)**2
 
 def getEnemyDirection(enemyX, enemyY, posx, posy):
-    # d = getEnemyDistance(enemyX, enemyY, posx, posy)
-    # alpha = math.asin((enemyX-posx)/d) * 180/math.pi
-    # if alpha < 0:
-    #     alpha = alpha + 360
-    
-    # if alpha < 22.5:
-    #     direction = "n"
-    # elif alpha < 67.5:
-    #     direction = "ne"
-    # elif alpha < 112.5:
-    #     direction = "e"
-    # elif alpha < 157.5:
-    #     direction = "se"
-    # elif alpha < 202.5:
-    #     direction = "s"
-    # elif alpha < 247.5:
-    #     direction = "sw"
-    # elif alpha < 292.5:
-    #     direction = "w"
-    # else:
-    #     direction = "nw"
+    default_direction = "nw"
+    direction = default_direction
 
-    # print(alpha)
-
-    if enemyX == posx:
-        if (enemyY > posy):
+    if abs(enemyX - posx) < 150:
+        if (enemyY < posy):
             direction = "n"
         else:
             direction = "s"
-    elif enemyY == posy:
+    elif abs(enemyY - posy) < 150:
         if (enemyX > posx):
             direction = "e"
         else:
             direction = "w"
-    elif (enemyX > posx) and (enemyY > posy):
-        direction = "ne"
-    elif (enemyX > posx) and (enemyY < posy):
-        direction = "se"
-    elif (enemyX < posx) and (enemyY < posy):
-        direction = "sw"
+    elif (enemyX > posx):
+        if (enemyY < posy):
+            direction = "ne"
+        else:
+            direction = "se"
+    elif (enemyX < posx):
+        if (enemyY > posy):
+            direction = "sw"
     else:
         direction = "nw"
         

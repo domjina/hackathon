@@ -73,7 +73,7 @@ while True:
     if msgFromServerParsed[0] == bot.MsgType.NEAR_PLAYER:
         enemyClass, enemyName, enemyX, enemyY = msgFromServerParsed[1]
         enemyDistance = bot.getEnemyDistance(enemyX, enemyY, posx, posy)
-        if enemyDistance < 16**2:
+        if enemyDistance < 300:
             print("Enemy within shooting range")
             enemyDirection = bot.getEnemyDirection(enemyX, enemyY, posx, posy)
             bot.faceDirection(enemyDirection, UDPClientSocket, serverAddressPort)
