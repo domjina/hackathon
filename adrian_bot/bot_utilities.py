@@ -28,7 +28,12 @@ class PlayerColor(Enum):
     YELLOW = auto()
     BLUE = auto()
 
-#player_class_to_color()
+player_class_to_color = {
+    "warrior": PlayerColor.RED,
+    "elf": PlayerColor.GREEN,
+    "wizard": PlayerColor.YELLOW,
+    "valkyrie": PlayerColor.BLUE,
+}
 
 map_item_name = {
     "key": ItemType.KEY,

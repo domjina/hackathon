@@ -1,8 +1,8 @@
+from bot_utilities import *
 
 import socket
 import time
-import random
- 
+import random 
 
 msgFromClient       = "requestjoin:mydisplayname"
 name = "mydisplayname"
@@ -34,11 +34,11 @@ directions = ["n","s","e","w","nw","sw","ne","se"]
 
 # Create a UDP socket
 UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
- 
+
 # Send to server using created UDP socket
 UDPClientSocket.sendto(bytesToSend, serverAddressPort)
 
- 
+
 
 
 
@@ -53,8 +53,9 @@ while True:
     msgFromServer = UDPClientSocket.recvfrom(bufferSize)[0].decode('ascii')
     
     ##uncomment to see message format from server
-    #print(msgFromServer)
-    
+    # print(msgFromServer)
+    parse_server_message(msgFromServer, True)
+
     if "playerupdate" in msgFromServer:
         pos = msgFromServer.split(":")[1]
         posSplit = pos.split(",")
@@ -108,6 +109,8 @@ while True:
         SendMessage(directionFaceMessage)
         timeSinceDirectionFace = time.time()
         print(directionFaceMessage)
+
+
 
 
 
