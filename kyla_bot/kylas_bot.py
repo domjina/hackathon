@@ -77,39 +77,39 @@ while True:
             bot.fire(UDPClientSocket, serverAddressPort)
         # this would be a good place to make a hunter bot
     
-    if msgFromServerParsed[0] == bot.MsgType.NEAR_ITEM:
-        for element in msgFromServerParsed[1]:
-            if element[0] == bot.ItemType.KEY:
-                bot.move((posx, posy), element[1][0]-posx, element[1][1]-posy, UDPClientSocket, serverAddressPort)
-                print("Got the key!")
-                posx += element[1][0] - posx
-                posy += element[1][1] - posy
-            elif element[0] == bot.ItemType.TREASURE:
-                bot.move((posx, posy), element[1][0]-posx, element[1][1]-posy, UDPClientSocket, serverAddressPort)
-                print("Got the treasure!")
-                posx += element[1][0] - posx
-                posy += element[1][1] - posy
+    # if msgFromServerParsed[0] == bot.MsgType.NEAR_ITEM:
+    #     for element in msgFromServerParsed[1]:
+    #         if element[0] == bot.ItemType.KEY:
+    #             bot.move((posx, posy), element[1][0]-posx, element[1][1]-posy, UDPClientSocket, serverAddressPort)
+    #             print("Got the key!")
+    #             posx += element[1][0] - posx
+    #             posy += element[1][1] - posy
+    #         elif element[0] == bot.ItemType.TREASURE:
+    #             bot.move((posx, posy), element[1][0]-posx, element[1][1]-posy, UDPClientSocket, serverAddressPort)
+    #             print("Got the treasure!")
+    #             posx += element[1][0] - posx
+    #             posy += element[1][1] - posy
     
     
 
 
 
 
-    now = time.time()
+    # now = time.time()
 
-    # #every few seconds, request to move to a random point nearby. No pathfinding, server will 
-    # #attempt to move in straight line.
-    if (now - timeSinceMove) > moveInterval:
-        randomX = random.randrange(-50,50)
-        randomY = random.randrange(-50,50)
-        posx += randomX
-        posy += randomY
+    # # #every few seconds, request to move to a random point nearby. No pathfinding, server will 
+    # # #attempt to move in straight line.
+    # if (now - timeSinceMove) > moveInterval:
+    #     randomX = random.randrange(-50,50)
+    #     randomY = random.randrange(-50,50)
+    #     posx += randomX
+    #     posy += randomY
 
-        timeSinceMove = time.time()
-        # requestmovemessage = "moveto:" + str(posx)  + "," + str(posy)
-        # SendMessage(requestmovemessage)
-        # print(requestmovemessage)
-        bot.move((posx, posy), randomX, randomY, UDPClientSocket, serverAddressPort)
+    #     timeSinceMove = time.time()
+    #     # requestmovemessage = "moveto:" + str(posx)  + "," + str(posy)
+    #     # SendMessage(requestmovemessage)
+    #     # print(requestmovemessage)
+    #     bot.move((posx, posy), randomX, randomY, UDPClientSocket, serverAddressPort)
 
     # #let's fire
     # if (now - timeSinceFire) > fireInterval:
