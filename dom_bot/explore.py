@@ -1,4 +1,4 @@
-import doms_bot_utilities as ds
+import doms_bot_utilities as dbu
 import bot_utilities as bu
 
 mappedWalls = [[]]
@@ -8,13 +8,7 @@ stuffOfInterest = {"exit" : "", "food":"", "ammo":""}
 
 nearby_floors = []
 
-sock, connection, curX, curY = ds.connect(("127.0.0.1", 11000))
-#while True:
-#    msgFromServer_encoded = sock.recvfrom(1024)[0].decode('ascii')
-#    msgFromServer_parsed = bu.parse_server_message(msgFromServer_encoded)
-#    if msgFromServer_parsed[0] == bu.MsgType.P_UPDATE:
-#        ds.move(msgFromServer_parsed[1][0], 32, 32, sock, connection)
-#        print("Moved")
+sock, connection, curX, curY = dbu.connect(("127.0.0.1", 11000))
 
 #while True:
 #    visited_but_unprocessed = []
@@ -34,12 +28,14 @@ sock, connection, curX, curY = ds.connect(("127.0.0.1", 11000))
 
 
 while True:
-   msgFromServer_encoded = sock.recvfrom(1024)[0].decode("ascii")
-   msgFromServerParsed = bu.parse_server_message(msgFromServer_encoded)
+   msgFromServer_decoded = sock.recvfrom(1024)[0].decode("ascii")
+   msgFromServerParsed = bu.parse_server_message(msgFromServer_decoded)
    if msgFromServerParsed[0] == bu.MsgType.NEAR_ITEM:
     for element in msgFromServerParsed[1]:
         if element[0] == bu.ItemType.KEY:
-            ds.move((curX, curY), element[1][0]-curX, element[1][1]-curY, sock, connection)
+            dbu.move((curX, curY), element[1][0]-curX, element[1][1]-curY, sock, connection)
+            curX += element[1][0] - curX
+            curY += element[1][1] - curY
 
 
 #have 2 sets, one of floors and one of walls

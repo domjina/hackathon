@@ -1,5 +1,6 @@
 import socket
 import math
+import bot_utilities as bu
 
 """
 @parmaters:
@@ -32,10 +33,12 @@ def move(curPos: tuple, posX: str, posY: str, connection: object, connected_on: 
     connection.sendto(str.encode(str(message)), connected_on)
     has_moved = False
     while has_moved == False:
-        data, addr = connection.recvfrom(1024)
-        if str.encode(str(curPos[0]+posX)) in data:
-            has_moved = True
-    print("Player has moved to position:", (curPos[0] + posX))
+        msgFromServer_decoded = connection.recvfrom(1024)[0].decode("ascii")
+        msgFromServerParsed = bu.parse_server_message(msgFromServer_decoded)
+        if msgFromServerParsed[0] == bu.MsgType.P_UPDATE:
+            if curPos[0] not in msgFromServerParsed[1]:
+                has_moved = True
+    print("Player has moved")
 
 
 """
