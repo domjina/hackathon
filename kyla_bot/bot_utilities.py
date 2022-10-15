@@ -95,7 +95,7 @@ def parse_server_message(msg, debug=False):
         if args[0] not in playerclass_to_playercolor:
             print(f"!!!   PLAYER CLASS '{ args[0] }' IS UNDEFINED   !!!")
         else:
-            args_parsed = [playerclass_to_playercolor[args[0]], (float(args[1]), float(args[2]))]
+            args_parsed = [playerclass_to_playercolor[args[0]], args[1], (float(args[2]), float(args[3]))]
     elif msg_type == "exit":
         msg_type = MsgType.EXIT
         args_parsed = [(float(args[0]), float(args[1]))]
