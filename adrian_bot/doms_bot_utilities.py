@@ -1,26 +1,36 @@
 import socket
 import math
 import bot_utilities as bu
+from game_state import GameInstance
 
 """
 @parmaters:
     UDP_IP - The IP address
     UDP_PORT - The port number
 """
-def connect(connection: tuple) -> object:                       #This function creates a connection between the client and the server
+def connect(connection: tuple, game: GameInstance, displayname) -> object:                       #This function creates a connection between the client and the server
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    MESSAGE = b"requestjoin:JH02"
+    displayname_decoded = displayname.decode("ascii")
+    MESSAGE = b"requestjoin:"+displayname
     sock.sendto(MESSAGE, connection)
     joined = False
     while joined == False:
-        data, addr = sock.recvfrom(1024)
-        if b"JH02" in data:
-            joined = True
-    print("Connected to:",connection[0] + ", On port:", connection[1])
-    data = str(data).split(",")
-    startX=math.floor(float(data[2].replace("'","")))
-    startY=math.floor(float(data[3].replace("'","")))
-    return sock, connection, startX, startY
+        msgFromServer_decoded = sock.recvfrom(1024)[0].decode("ascii")
+        msgFromServerParsed = bu.parse_server_message(msgFromServer_decoded)
+        if msgFromServerParsed[0] == bu.MsgType.P_JOINED:
+            game.players[msgFromServerParsed[1][0]] = (msgFromServerParsed[1][1], msgFromServerParsed[1][2])
+            if msgFromServerParsed[1][1] == displayname_decoded:
+                game.player_color = msgFromServerParsed[1][0]
+                game.player_pos = msgFromServerParsed[1][2]
+                joined = True
+        # # data, addr = sock.recvfrom(1024)
+        # if b"JH02" in data:
+        #     joined = True
+    print("Connected to:",connection[0] + ", On port:", connection[1], "as", game.player_color.name)
+    # data = str(data).split(",")
+    # startX=math.floor(float(data[2].replace("'","")))
+    # startY=math.floor(float(data[3].replace("'","")))
+    return sock, connection #, startX, startY
 
 """
 @parameters:

@@ -118,3 +118,4 @@ def make_move(player_pos, player_ori, target_pos):
 
 
 # print(parse_server_message("abc:1,3.2,False,6", True))
+

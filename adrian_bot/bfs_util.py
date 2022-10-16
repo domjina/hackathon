@@ -2,7 +2,6 @@
 
 
 from queue import Queue
-from re import sub
 from bot_utilities import TileType
 from game_state import GameInstance
 
@@ -29,7 +28,7 @@ def add_pos(pos_a, pos_b):
 def sub_pos(pos_a, pos_b):
     return int(pos_a[0]-pos_b[0]), int(pos_a[1]-pos_b[1])
 
-def get_target_exploring(game_instance: GameInstance, target_pos=None):
+def get_target_exploring(game_instance: GameInstance, target_pos=None, target_type=set()):
     player_pos = normalize_pos_grid(add_pos(game_instance.player_pos, (4,4)))
     # player_pos = normalize_pos_grid(game_instance.player_pos)
     pathtrace_direction = {player_pos: (0,0)} # from coordinate to coordinate delta
@@ -47,7 +46,7 @@ def get_target_exploring(game_instance: GameInstance, target_pos=None):
 
                 pathtrace_direction[new_pos] = move
                 search_queue.put(new_pos)
-                if game_instance.get_tile_at(*new_pos) == TileType.UNEXPLORED or new_pos == target_pos:
+                if ((game_instance.get_tile_at(*new_pos) == TileType.UNEXPLORED or new_pos in target_type) and not target_pos) or new_pos == target_pos: # bug found!
                     target_found = new_pos
                     break
                 valid_moves.append(True)
@@ -62,7 +61,8 @@ def get_target_exploring(game_instance: GameInstance, target_pos=None):
                 if not new_pos in pathtrace_direction and not game_instance.get_tile_at(*new_pos) == TileType.WALL:
                     pathtrace_direction[new_pos] = move
                     search_queue.put(new_pos)
-                    if game_instance.get_tile_at(*new_pos) == TileType.UNEXPLORED or new_pos == target_pos:
+                    if ((game_instance.get_tile_at(*new_pos) == TileType.UNEXPLORED or new_pos in target_type) and not target_pos) or new_pos == target_pos: # bug found!
+                    # if game_instance.get_tile_at(*new_pos) == TileType.UNEXPLORED or new_pos == target_pos:
                         target_found = new_pos
                         break
     return target_found, pathtrace_direction

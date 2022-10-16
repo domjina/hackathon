@@ -5,11 +5,17 @@ class GameInstance:
     def __init__(self) -> None:
         self.game_floorplan = {}
         self.player_pos = (0, 0)
+        self.player_color = None
         self.nav_target = None
         self.has_key = False
+        self.key_pos = None
         self.health = 100
-        self.ammo = 10
+        self.playerammo = 10
         self.exit = None
+        self.players = {}
+        self.foods = set()
+        self.ammos = set()
+        self.treasures = set()
 
     def explore_floor(self, x, y):
         self.game_floorplan[(int(x), int(y))] = TileType.FLOOR
