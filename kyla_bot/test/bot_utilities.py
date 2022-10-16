@@ -80,8 +80,8 @@ def parse_server_message(msg, debug=False):
         args_parsed = [(float(args[0]), float(args[1])), float(args[2]), float(args[3]), args[4] == "True"]
     elif msg_type in ["nearbywalls", "nearbyfloors"]:
         msg_type = MsgType.NEAR_FLOORS if msg_type == "nearbyfloors" else MsgType.NEAR_WALLS
-        for i in range(0, len(args), 2):
-            args_parsed.append((float(args[i]), float(args[i+1])))
+        for i in range(1, len(args), 2):
+            args_parsed.append((float(args[i-1]), float(args[i])))
         # args_parsed = [(float(args[0]), float(args[1])), (float(args[2]), float(args[3]))]
     elif msg_type == "nearbyitem":
         msg_type = MsgType.NEAR_ITEM
