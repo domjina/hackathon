@@ -116,20 +116,14 @@ def move(curPos: tuple, posX: str, posY: str, connection: object, connected_on: 
     message = f"moveto:{newX},{newY}"
     print(message)
     connection.sendto(str.encode(message), connected_on)
-    has_moved = False
-    while has_moved == False:
-        msgFromServer_decoded = connection.recvfrom(1024)[0].decode("ascii")
-        msgFromServerParsed = parse_server_message(msgFromServer_decoded)
-        if msgFromServerParsed[0] == MsgType.P_UPDATE:
-            if curPos[0] not in msgFromServerParsed[1]:
-                has_moved = True
-    print("Player has moved")
+
+def moveDirection(direction, connection, connected_on):
+    message = f"movedirection:{direction}"
+    connection.sendto(str.encode(message), connected_on)
 
 def fire(connection, connected_on):
     message = "fire:"
-    print(message)
     connection.sendto(str.encode(message), connected_on)
-    print("Fire!")
 
 def getEnemyDistance(enemyX, enemyY, posx, posy):
     return (enemyX - posx)**2 + (enemyY - posy)**2
@@ -138,12 +132,12 @@ def getEnemyDirection(enemyX, enemyY, posx, posy):
     default_direction = "nw"
     direction = default_direction
 
-    if abs(enemyX - posx) < 150:
+    if abs(enemyX - posx) < 5:
         if (enemyY < posy):
             direction = "n"
         else:
             direction = "s"
-    elif abs(enemyY - posy) < 150:
+    elif abs(enemyY - posy) < 5:
         if (enemyX > posx):
             direction = "e"
         else:
@@ -165,6 +159,9 @@ def faceDirection(direction, connection, connected_on):
     directionFaceMessage = "facedirection:" + direction
     connection.sendto(str.encode(directionFaceMessage), connected_on)
     print(directionFaceMessage)
+
+
+
 
 
 
