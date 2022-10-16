@@ -3,6 +3,7 @@ import bot_utilities as bu
 from game_state import *
 from bfs_util import *
 import sys
+import random
 
 mappedWalls = [[]]
 mappedFloor = [[]]
@@ -10,7 +11,7 @@ mappedFloor = [[]]
 stuffOfInterest = {"exit" : "", "food":"", "ammo":""}
 
 nearby_floors = []
-
+stuck_counter = 0
 # player_class = "warrior"
 
 game = GameInstance()
@@ -70,6 +71,7 @@ while True:
                 game.treasures.discard(pos)
                 game.foods.discard(pos)
         elif msgFromServerParsed[0] == bu.MsgType.P_UPDATE:
+            game.last_position = game.player_pos
             game.player_pos = msgFromServerParsed[1][0]
             game.explore_floor(*game.player_pos)
             game.health = msgFromServerParsed[1][1]
@@ -95,7 +97,12 @@ while True:
     # strategy planning & response
     if game.foods or game.treasures or game.ammos:
         game.nav_target = None
-        bfspath_data = get_target_exploring(game, game.nav_target, game.foods.union(game.treasures).union(game.ammos))
+        targets = game.foods.union(game.treasures).union(game.ammos)
+        if game.has_key:
+            targets.add(game.exit)
+        elif game.key_pos:
+            targets.add(game.key_pos)
+        bfspath_data = get_target_exploring(game, game.nav_target, targets)
     # elif game.foods:
     #     game.nav_target = None
     #     bfspath_data = get_target_exploring(game, game.nav_target, game.foods)
@@ -106,6 +113,11 @@ while True:
     #     game.nav_target = None
     #     bfspath_data = get_target_exploring(game, game.nav_target, game.ammos)
     # else:
+
+    if stuck_counter > 5:
+        directions = ["n","s","e","w","nw","sw","ne","se"]
+        moveDirection(random.choice(directions), sock, connection)
+        continue
     if not bfspath_data[0]:
         game.nav_target = game.exit
         if not game.has_key:
