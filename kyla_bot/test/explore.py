@@ -19,7 +19,8 @@ stuck_counter = 0
 game = GameInstance()
 # sock, connection, curX, curY = dbu.connect(("127.0.0.1", 11000), game, b"JH02")
 # print(sys.argv)
-sock, connection = dbu.connect(("127.0.0.1", 11000), game, b"JH02" if len(sys.argv) < 2 else sys.argv[1].encode())
+# sock, connection = dbu.connect(("127.0.0.1", 11000), game, b"JH02" if len(sys.argv) < 2 else sys.argv[1].encode())
+sock, connection = dbu.connect(("192.168.0.100", 11000), game, b"JH02" if len(sys.argv) < 2 else sys.argv[1].encode())
 
 #while True:
 #    visited_but_unprocessed = []
@@ -36,6 +37,7 @@ sock, connection = dbu.connect(("127.0.0.1", 11000), game, b"JH02" if len(sys.ar
                 #visited_but_unprocessed.append(coords)
         #pass
 
+directions = ["n","s","e","w","nw","sw","ne","se"]
 
 while True:
     for _ in range(2):
@@ -93,6 +95,7 @@ while True:
                 game.treasures.discard(pos)
                 game.foods.discard(pos)
         elif msgFromServerParsed[0] == bu.MsgType.P_UPDATE:
+            game.last_position = game.player_pos
             game.player_pos = msgFromServerParsed[1][0]
             game.explore_floor(*game.player_pos)
             game.health = msgFromServerParsed[1][1]
@@ -135,18 +138,19 @@ while True:
     #     bfspath_data = get_target_exploring(game, game.nav_target, game.ammos)
     # else:
     if stuck_counter > 5:
-        directions = ["n","s","e","w","nw","sw","ne","se"]
         bot.moveDirection(random.choice(directions), sock, connection)
         continue
     elif game.last_position == game.player_pos:
         stuck_counter += 1
+
     if not bfspath_data[0]:
         game.nav_target = game.exit
         if not game.has_key:
             game.nav_target = game.key_pos
         bfspath_data = get_target_exploring(game, game.nav_target)
     if not bfspath_data[0]:
-        print("ERROR - BFS path not found")
+        # print("ERROR - BFS path not found")
+        bot.moveDirection(random.choice(directions), sock, connection)
     else:
         next_move = get_move_position_from_trace(*bfspath_data)
         dbu.move(game.player_pos, *next_move, sock, connection)

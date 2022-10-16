@@ -25,6 +25,7 @@ class GameInstance:
         self.game_floorplan[(int(x), int(y))] = TileType.WALL
 
     def set_player_position(self, x, y):
+        self.last_position = self.player_pos
         self.player_pos = (x, y)
 
     def get_tile_at(self, x, y):
