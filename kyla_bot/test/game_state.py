@@ -11,6 +11,7 @@ class GameInstance:
         self.key_pos = None
         self.health = 100
         self.playerammo = 10
+        self.last_position = (0,0)
         self.exit = None
         self.players = {}
         self.foods = set()
